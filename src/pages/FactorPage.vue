@@ -11,7 +11,8 @@ const metaData = {
   // sets document title
   title: 'صفحه فاکتور ها',
   // optional; sets final title as "Index Page - My Website", useful for multiple level meta
-  titleTemplate: title => `${title} - سایت تست`
+  titleTemplate: title => `${title} - سای
+  ت تست`
 },
 
 export default {
