@@ -1,0 +1,62 @@
+﻿@import url(fontiran.css);
+
+/* لینک فایلی که وظیفه بارگذاری فونت ها را برعهده دارد */
+body {
+    font-family: iranyekan !important;
+    margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input,
+textarea {
+    font-family: iranyekan !important;
+}
+
+h1 {
+    font-weight: bold;
+}
+
+
+
+.font-thin {
+    font-weight: 100;
+}
+
+.font-light {
+    font-weight: 300;
+}
+
+.font-regular {
+    font-weight: normal;
+}
+
+.font-medium {
+    font-weight: 500;
+}
+
+.font-bold {
+    font-weight: bold;
+}
+
+.font-extrabold {
+    font-weight: 800;
+}
+
+.font-black {
+    font-weight: 900;
+}
+
+.font-extrablack {
+    font-weight: 950;
+}
+
+blockquote {
+    font-weight: 500;
+    padding: 10px;
+    border: 1px dashed #666666;
+}
