@@ -1,10 +1,29 @@
 <template lang="">
   <!-- navBar -->
+  <q-dialog v-model="showDialog" persistent>
+    <q-card>
+      <q-card-section class="row items-center">
+        <span class="q-ml-sm">مایل به ثبت نظرات؟؟</span>
+      </q-card-section>
+
+      <q-card-actions align="center">
+        <q-btn flat label="بازگشت" color="grey-8" v-close-popup />
+        <q-btn
+          @click="handlePostComments"
+          flat
+          label="ثبت نظرات"
+          color="cyan-8"
+          v-close-popup
+          to="/"
+        />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
   <section class="flex-no h_screen relative">
     <section class="col-12 q-py-sm">
       <div class="row items-center justify-between q-px-md q-pb-sm">
         <div class="row items-center">
-          <div class="q-ml-sm">مرحله {{ questionStage - 1 }}</div>
+          <div class="q-ml-sm">مرحله {{ questionStage + 1 }}</div>
         </div>
         <div>
           <q-btn to="/" flat label="خروج" />
@@ -19,13 +38,13 @@
     </section>
     <section class="question_container q-pa-md q-mt-lg">
       <transition-group tag="div" name="list">
-        <div v-for="item in data.data" :key="item.id">
-          <div v-if="item.id === questionStage">
+        <div v-for="(item, index) in data.data" :key="item.id">
+          <div v-if="index === questionStage">
             <div class="text-h6">
               {{ item.name }}
             </div>
-            <div v-for="question in item.questions" :key="question.id">
-              <question-container :questionInfo="question" />
+            <div v-for="(question, index) in item.questions" :key="question.id">
+              <question-container :titleNo="index" :questionInfo="question" />
             </div>
           </div>
         </div>
@@ -37,22 +56,22 @@
       <transition-group tag="div" name="list">
         <q-btn
           @click="handleNextStage"
-          v-if="data.data.length > questionStage - 1"
+          v-if="data.data.length - 1 > questionStage"
           color="cyan-8"
-          icon="arrow_forward_ios"
+          icon="chevron_right"
         >
-          بعدی</q-btn
-        >
-        <q-btn @click="handlePostComments" color="cyan-8" to="/" v-else>
+          بعدی
+        </q-btn>
+        <q-btn @click="handleShowDialog" color="cyan-8" v-else>
           ثبت نظرات</q-btn
         >
       </transition-group>
       <transition-group tag="div" name="list">
         <q-btn
           @click="handlePreStage"
-          v-if="questionStage > 2"
+          v-if="questionStage"
           color="cyan-8"
-          icon-right="arrow_back_ios"
+          icon-right="chevron_left"
           >قبلی</q-btn
         ><q-btn to="/" color="cyan-8" v-else>خروج</q-btn>
       </transition-group>
@@ -69,18 +88,22 @@ export default {
     QuestionContainer
   },
   setup (props) {
-    const questionStage = ref(2)
+    const questionStage = ref(0)
+    const showDialog = ref(false)
     const handleNextStage = () => {
       ++questionStage.value
     }
+    const handleShowDialog = () => {
+      showDialog.value = true
+    }
     const handlePostComments = () => {
-      alert('نظرات ثبت شدند.')
+      alert('نظرات ثبت شدند')
     }
     const handlePreStage = () => {
       --questionStage.value
     }
     const progressBarAdvance = computed(
-      () => (questionStage.value - 1) / data.data.length
+      () => questionStage.value / (data.data.length - 1)
     )
     // onMounted(() => {
     //   console.log(
@@ -90,11 +113,13 @@ export default {
     //   )
     // })
     return {
+      showDialog,
       questionStage,
       data,
       progressBarAdvance,
       handleNextStage,
       handlePreStage,
+      handleShowDialog,
       handlePostComments
     }
   }
