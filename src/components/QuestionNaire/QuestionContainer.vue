@@ -2,7 +2,10 @@
   <div class="q-mt-xl q-px-sm">
     <div>{{ titleNo + 1 }}- {{ questionInfo.question }}</div>
     <section class="q-mt-lg  q-px-sm">
-      <div v-if="isMultiChoices" class="row justify-center items-center">
+      <div
+        v-if="isMultiChoices"
+        class="row justify-center desktop_size_multi_Answers  items-center"
+      >
         <div v-for="item in questionInfo.options" :key="item.id">
           <AppAnswer :type="questionInfo.type.text" @click="handleAddAnswers()"
             >{{ item.title }}
@@ -14,7 +17,7 @@
           <AppAnswer :type="questionInfo.type.text" />
         </div>
       </div>
-      <div class="row justify-evenly" v-if="isYesOrNO">
+      <div class="" v-if="isYesOrNO">
         <div
           v-for="item in questionInfo.options"
           :key="item.id"
@@ -23,6 +26,7 @@
           <AppAnswer
             :isChoosen="item.id === choosenNo"
             :type="questionInfo.type.text"
+            class="q-my-sm"
             >{{ item.title }}</AppAnswer
           >
         </div>
@@ -78,4 +82,16 @@ export default {
   }
 }
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+@media only screen and (max-width: 599.99px) {
+}
+@media only screen and (max-width: 1023.99px) {
+}
+@media only screen and (min-width: 1024px) {
+  .desktop_size_multi_Answers {
+    justify-content: start !important;
+  }
+}
+@media only screen and (min-width: 1439.99px) {
+}
+</style>

@@ -11,7 +11,13 @@
       </div>
     </div>
     <div v-else-if="type.includes('متن')" class="q-my-sm p-mx-xs">
-      <q-input filled type="textarea" hint="نظر خود را بنویسید" />
+      <q-input
+        filled
+        color="cyan-8"
+        label="نظر خود را بنویسید"
+        type="textarea"
+        clearable
+      />
     </div>
     <div v-else class="">
       <div class="yes_or_no q-px-sm q-py-xs" :class="{ choosen: isChoosen }">

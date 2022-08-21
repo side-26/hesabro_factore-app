@@ -30,14 +30,19 @@
         </div>
       </div>
       <q-linear-progress
-        class="q-pt-lg-md"
+        style="rotate: 180deg;"
+        class="q-pt-lg-md "
         color="cyan-8"
         size="3px"
         :value="progressBarAdvance"
       />
     </section>
-    <section class="question_container q-pa-md q-mt-lg">
-      <transition-group tag="div" name="list">
+    <section class="question_container relative row q-pa-md q-mt-lg">
+      <transition-group
+        tag="div"
+        name="list"
+        class="col col-md-6 col-lg-4 q-ml-lg-lg"
+      >
         <div v-for="(item, index) in data.data" :key="item.id">
           <div v-if="index === questionStage">
             <div class="text-h6">
@@ -46,45 +51,37 @@
             <div v-for="(question, index) in item.questions" :key="question.id">
               <question-container :titleNo="index" :questionInfo="question" />
             </div>
+      <navigate-btn-group
+      @handle-pre-stage="handlePreStage"
+      @handle-next-stage="handleNextStage"
+      @handle-show-dialog='handleShowDialog'
+      :arrLength="data.data.length"
+      :questionStage="questionStage"
+      class="hidden_in_tocuh"
+    />
           </div>
         </div>
-      </transition-group>
+    </transition-group>
     </section>
-    <div
-      class="navigate absolute-bottom row justify-between q-pa-lg items-center mobile-only bg-white"
-    >
-      <transition-group tag="div" name="list">
-        <q-btn
-          @click="handleNextStage"
-          v-if="data.data.length - 1 > questionStage"
-          color="cyan-8"
-          icon="chevron_right"
-        >
-          بعدی
-        </q-btn>
-        <q-btn @click="handleShowDialog" color="cyan-8" v-else>
-          ثبت نظرات</q-btn
-        >
-      </transition-group>
-      <transition-group tag="div" name="list">
-        <q-btn
-          @click="handlePreStage"
-          v-if="questionStage"
-          color="cyan-8"
-          icon-right="chevron_left"
-          >قبلی</q-btn
-        ><q-btn to="/" color="cyan-8" v-else>خروج</q-btn>
-      </transition-group>
-    </div>
+    <navigate-btn-group
+      @handle-pre-stage="handlePreStage"
+      @handle-next-stage="handleNextStage"
+      @handle-show-dialog='handleShowDialog'
+      :arrLength="data.data.length"
+      :questionStage="questionStage"
+      class="hidden_in_desktop absolute-bottom "
+    />
   </section>
 </template>
 <script>
 import { ref, computed } from 'vue'
 import QuestionContainer from 'components/QuestionNaire/QuestionContainer.vue'
+import NavigateBtnGroup from 'components/QuestionNaire/NavigateBtnGroup.vue'
 import { data } from '../config/data.config'
 export default {
   name: 'QuestionNaire',
   components: {
+    NavigateBtnGroup,
     QuestionContainer
   },
   setup (props) {
@@ -105,13 +102,6 @@ export default {
     const progressBarAdvance = computed(
       () => questionStage.value / (data.data.length - 1)
     )
-    // onMounted(() => {
-    //   console.log(
-    //     progressBarAdvance.value,
-    //     data.data.length,
-    //     questionStage.value
-    //   )
-    // })
     return {
       showDialog,
       questionStage,
@@ -125,15 +115,12 @@ export default {
   }
 }
 </script>
-<style lang="scss">
-.question_container {
-  max-height: 72vh;
-  overflow-y: auto;
-}
+<style lang="scss" scoped>
+
 .h_screen {
   height: 100vh;
 }
-.list-move, /* apply transition to moving elements */
+.list-move,
 .list-enter-active,
 .list-leave-active {
   transition: all 0.5s ease;
@@ -144,10 +131,30 @@ export default {
   opacity: 0;
   transform: translateX(30px);
 }
-
-/* ensure leaving items are taken out of layout flow so that moving
-   animations can be calculated correctly. */
 .list-leave-active {
   position: absolute;
+}
+
+// responsive sizes
+@media only screen and (max-width: 599.99px) {
+}
+@media only screen and (max-width: 1023.99px) {
+  .question_container {
+  max-height: 72vh;
+  overflow-y: auto;
+  .hidden_in_tocuh{
+  display:none
+}
+}
+
+}
+@media only screen and (min-width: 1024px) {
+  .hidden_in_desktop {
+    display: none;
+  }
+}
+@media only screen and (max-width: 1439.99px) {
+}
+@media only screen and (min-width: 1440px) {
 }
 </style>
