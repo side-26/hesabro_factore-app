@@ -1,162 +1,131 @@
 <template>
   <div class="q-pa-md">
-    <q-table
-      :rows-per-page-options="[5, 10, 15, 20, 25, 50, 0]"
-      title="Treats"
-      :rows="rows"
-      :columns="columns"
-      row-key="name"
-    />
+    <q-markup-table>
+      <thead>
+        <tr>
+          <th class="text-left">نام مشتری</th>
+          <th class="text-right">نماینده فروش</th>
+          <th class="text-right">زیر مجموعه</th>
+          <th class="text-right">نوع فاکتور</th>
+          <th class="text-right">ایجاد شده در</th>
+          <th class="text-right">عملیات</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="factor in factors.data.items" :key="factor.id">
+          <td>
+            {{ factor.customer.name }}
+          </td>
+          <td>
+            {{ factor.sell_agent.name }}
+          </td>
+          <td>
+            {{ factor.branch.name }}
+          </td>
+          <td>
+            {{ factor.factor_type.name }}
+          </td>
+          <td>
+            {{ factor.created }}
+          </td>
+          <td>
+            <a
+              @click="
+                handleShowDialog(
+                  factor.branch.name,
+                  factor.factor_type.name,
+                  factor.customer.name
+                )
+              "
+              flat
+              class="function_td"
+            >
+              جزِییات فاکتور
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </q-markup-table>
+    <q-dialog v-model="layout" class="dialog">
+      <q-layout container class="bg-white">
+        <q-header borderd>
+          <q-toolbar>
+            <div></div>
+
+            <q-btn flat v-close-popup round dense icon="close" />
+          </q-toolbar>
+        </q-header>
+        <q-page-container>
+          <q-page padding>
+            <div class="q-my-sm row">
+              <div class="font_weight">نام مشتری :</div>
+              <div>
+                {{ factorDetailes.customerName }}
+              </div>
+            </div>
+            <div class="q-my-sm row">
+              <div class="font_weight">نام مشتری :</div>
+              <div>
+                {{ factorDetailes.customerName }}
+              </div>
+            </div>
+            <div class="q-my-sm row">
+              <div class="font_weight">نام مشتری :</div>
+              <div>
+                {{ factorDetailes.customerName }}
+              </div>
+            </div>
+          </q-page>
+        </q-page-container>
+      </q-layout>
+    </q-dialog>
   </div>
 </template>
-
 <script>
-const columns = [
-  {
-    name: 'name',
-    required: true,
-    label: 'Dessert (100g serving)',
-    align: 'left',
-    field: row => row.name,
-    format: val => `${val}`,
-    sortable: true
-  },
-  {
-    name: 'calories',
-    align: 'center',
-    label: 'Calories',
-    field: 'calories',
-    sortable: true
-  },
-  { name: 'fat', label: 'Fat (g)', field: 'fat', sortable: true },
-  { name: 'carbs', label: 'Carbs (g)', field: 'carbs' },
-  { name: 'protein', label: 'Protein (g)', field: 'protein' },
-  { name: 'sodium', label: 'Sodium (mg)', field: 'sodium' },
-  {
-    name: 'calcium',
-    label: 'Calcium (%)',
-    field: 'calcium',
-    sortable: true,
-    sort: (a, b) => parseInt(a, 10) - parseInt(b, 10)
-  },
-  {
-    name: 'iron',
-    label: 'Iron (%)',
-    field: 'iron',
-    sortable: true,
-    sort: (a, b) => parseInt(a, 10) - parseInt(b, 10)
-  }
-]
-
-const rows = [
-  {
-    name: 'Frozen Yogurt',
-    calories: 159,
-    fat: 6.0,
-    carbs: 24,
-    protein: 4.0,
-    sodium: 87,
-    calcium: '14%',
-    iron: '1%'
-  },
-  {
-    name: 'Ice cream sandwich',
-    calories: 237,
-    fat: 9.0,
-    carbs: 37,
-    protein: 4.3,
-    sodium: 129,
-    calcium: '8%',
-    iron: '1%'
-  },
-  {
-    name: 'Eclair',
-    calories: 262,
-    fat: 16.0,
-    carbs: 23,
-    protein: 6.0,
-    sodium: 337,
-    calcium: '6%',
-    iron: '7%'
-  },
-  {
-    name: 'Cupcake',
-    calories: 305,
-    fat: 3.7,
-    carbs: 67,
-    protein: 4.3,
-    sodium: 413,
-    calcium: '3%',
-    iron: '8%'
-  },
-  {
-    name: 'Gingerbread',
-    calories: 356,
-    fat: 16.0,
-    carbs: 49,
-    protein: 3.9,
-    sodium: 327,
-    calcium: '7%',
-    iron: '16%'
-  },
-  {
-    name: 'Jelly bean',
-    calories: 375,
-    fat: 0.0,
-    carbs: 94,
-    protein: 0.0,
-    sodium: 50,
-    calcium: '0%',
-    iron: '0%'
-  },
-  {
-    name: 'Lollipop',
-    calories: 392,
-    fat: 0.2,
-    carbs: 98,
-    protein: 0,
-    sodium: 38,
-    calcium: '0%',
-    iron: '2%'
-  },
-  {
-    name: 'Honeycomb',
-    calories: 408,
-    fat: 3.2,
-    carbs: 87,
-    protein: 6.5,
-    sodium: 562,
-    calcium: '0%',
-    iron: '45%'
-  },
-  {
-    name: 'Donut',
-    calories: 452,
-    fat: 25.0,
-    carbs: 51,
-    protein: 4.9,
-    sodium: 326,
-    calcium: '2%',
-    iron: '22%'
-  },
-  {
-    name: 'KitKat',
-    calories: 518,
-    fat: 26.0,
-    carbs: 65,
-    protein: 7,
-    sodium: 54,
-    calcium: '12%',
-    iron: '6%'
-  }
-]
-
+import { ref } from 'vue'
+import { factors } from '../../config/data.config'
 export default {
-  setup () {
+  setup (props) {
+    const layout = ref(false)
+    const factorDetailes = ref({})
+    const handleShowDialog = (branchName, factorTypeName, customerName) => {
+      factorDetailes.value = {
+        branchName,
+        factorTypeName,
+        customerName
+      }
+      layout.value = true
+    }
     return {
-      columns,
-      rows
+      factors,
+      layout,
+      factorDetailes,
+      handleShowDialog
     }
   }
 }
 </script>
+<style lang="scss">
+th {
+  text-align: left !important;
+}
+.function_td {
+  width: 100%;
+  justify-content: flex-end !important;
+  cursor: pointer;
+  &:hover {
+    font-weight: 500;
+  }
+}
+tbody > tr:hover {
+  box-shadow: 2px 1px 5px $cyan-5;
+  background: $cyan-3;
+}
+.font_weight {
+  font-weight: 700;
+}
+.q-layout-container {
+  // border-radius: 1rem !important;
+  // overflow: hidden;
+}
+</style>

@@ -3,7 +3,7 @@
   <q-dialog v-model="showDialog" persistent>
     <q-card>
       <q-card-section class="row items-center">
-        <span class="q-ml-sm">مایل به ثبت نظرات؟؟</span>
+        <span class="q-ml-sm">مایل به ثبت نظرات ؟</span>
       </q-card-section>
 
       <q-card-actions align="center">
@@ -20,7 +20,7 @@
     </q-card>
   </q-dialog>
   <section class="flex-no h_screen relative">
-    <section class="col-12 q-py-sm">
+    <section class="col-12 q-py-sm mobile-only">
       <div class="row items-center justify-between q-px-md q-pb-sm">
         <div class="row items-center">
           <div class="q-ml-sm">مرحله {{ questionStage + 1 }}</div>
@@ -40,8 +40,11 @@
       <transition-group tag="div" name="list">
         <div v-for="(item, index) in data.data" :key="item.id">
           <div v-if="index === questionStage">
-            <div class="text-h6">
-              {{ item.name }}
+            <div class="text-h6 row center_in_desktop text-cyan-8">
+              <div>دسته بندی :</div>
+              <div class="q-ml-xs">
+                {{ item.name }}
+              </div>
             </div>
             <div v-for="(question, index) in item.questions" :key="question.id">
               <question-container :titleNo="index" :questionInfo="question" />
@@ -50,42 +53,25 @@
         </div>
       </transition-group>
     </section>
-    <div
-      class="navigate absolute-bottom row justify-between q-pa-lg items-center mobile-only bg-white"
-    >
-      <transition-group tag="div" name="list">
-        <q-btn
-          @click="handleNextStage"
-          v-if="data.data.length - 1 > questionStage"
-          color="cyan-8"
-          icon="chevron_right"
-        >
-          بعدی
-        </q-btn>
-        <q-btn @click="handleShowDialog" color="cyan-8" v-else>
-          ثبت نظرات</q-btn
-        >
-      </transition-group>
-      <transition-group tag="div" name="list">
-        <q-btn
-          @click="handlePreStage"
-          v-if="questionStage"
-          color="cyan-8"
-          icon-right="chevron_left"
-          >قبلی</q-btn
-        ><q-btn to="/" color="cyan-8" v-else>خروج</q-btn>
-      </transition-group>
-    </div>
+    <NavigateBtn
+      @handle-next-stage="handleNextStage"
+      @handle-show-dialog="handleShowDialog"
+      @handle-pre-stage="handlePreStage"
+      :arrLength="data.data.length"
+      :questionStage="questionStage"
+    />
   </section>
 </template>
 <script>
 import { ref, computed } from 'vue'
 import QuestionContainer from 'components/QuestionNaire/QuestionContainer.vue'
+import NavigateBtn from 'components/QuestionNaire/NavigateBtn.vue'
 import { data } from '../config/data.config'
 export default {
   name: 'QuestionNaire',
   components: {
-    QuestionContainer
+    QuestionContainer,
+    NavigateBtn
   },
   setup (props) {
     const questionStage = ref(0)
@@ -126,13 +112,6 @@ export default {
 }
 </script>
 <style lang="scss">
-.question_container {
-  max-height: 72vh;
-  overflow-y: auto;
-}
-.h_screen {
-  height: 100vh;
-}
 .list-move, /* apply transition to moving elements */
 .list-enter-active,
 .list-leave-active {
@@ -149,5 +128,112 @@ export default {
    animations can be calculated correctly. */
 .list-leave-active {
   position: absolute;
+}
+// responsive
+@media screen and (max-width: 599px) {
+  .question_container {
+    max-height: 72vh;
+    overflow-y: auto;
+    .selected {
+      border: 2px solid;
+      border-color: $cyan-8;
+      color: $cyan-8;
+      font-weight: 00;
+    }
+    .choosen {
+      border: 2px $cyan-8;
+      border: none;
+      font-weight: 800;
+      font-size: 1.01rem;
+      color: $cyan-8;
+    }
+    .yes_or_no {
+      border: 1px solid $grey-5;
+      border-radius: 3rem;
+      transition: all 0.25s ease-in;
+    }
+  }
+}
+@media screen and (min-width: 600px) {
+}
+@media screen and (max-width: 1023.99px) {
+  .h_screen {
+    height: 100vh;
+  }
+}
+@media screen and (min-width: 1024px) {
+  .center_in_desktop {
+    text-align: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  .font_weight {
+    font-weight: 700;
+    word-spacing: 10px;
+    text-align: center;
+  }
+  .multi_answers_in_desktop {
+    flex-direction: column;
+    justify-content: end;
+    .answers_container {
+      width: 50%;
+      // margin: 1rem 0;
+
+      .answer {
+        margin: 0.6rem 0;
+        .app_answer {
+          background-color: $grey-3;
+          padding: 0.7rem 0;
+          padding-left: 1rem;
+          border: none;
+          margin: 0;
+        }
+
+        .selected {
+          border: 2px dotted $grey-3;
+          background: $cyan-4;
+          color: white;
+          overflow: hidden;
+          box-sizing: content-box !important;
+        }
+      }
+    }
+  }
+  .yes_or_no_answers_container,
+  .text_answers {
+    width: 50%;
+    margin: 0 auto;
+    .yes_or_no {
+      transition: all 0.25s ease-in-out;
+      cursor: pointer;
+      border-radius: 3rem;
+      background-color: $grey-3;
+      padding: 0.7rem 0;
+      padding-left: 1rem;
+      border: none;
+      margin: 0;
+    }
+    .choosen {
+      border: 2px dotted $grey-3;
+      background: $cyan-4;
+      color: white;
+      overflow: hidden;
+      box-sizing: content-box !important;
+    }
+  }
+  .navigate_btn_group_desktop {
+    margin: 0 auto;
+    width: 40%;
+    .navigate_btn {
+      border-radius: 3rem;
+      width: 10rem;
+    }
+  }
+}
+@media screen and (min-width: 1440px) {
+  .navigate_btn_group_desktop{
+    width: 30%;
+  }
 }
 </style>

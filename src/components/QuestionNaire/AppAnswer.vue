@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="q-my-md answer">
     <div
       @click="handleSelect"
       class="q-my-md q-pa-sm q-mx-sm app_answer"
@@ -10,10 +10,15 @@
         <slot></slot>
       </div>
     </div>
-    <div v-else-if="type.includes('متن')" class="q-my-sm p-mx-xs">
-      <q-input filled type="textarea" hint="نظر خود را بنویسید" />
+    <div v-else-if="type.includes('متن')" class="q-my-sm p-mx-xs text_answers">
+      <q-input
+        filled
+        type="textarea"
+        color="cyan-8"
+        label="نظر خود را بنویسید"
+      />
     </div>
-    <div v-else class="">
+    <div v-else class="yes_or_no_answers_container">
       <div class="yes_or_no q-px-sm q-py-xs" :class="{ choosen: isChoosen }">
         <slot></slot>
       </div>
@@ -57,25 +62,9 @@ export default {
   border-color: $grey-5;
   cursor: pointer;
 }
-.selected {
-  border: 2px solid;
-  border-color: $cyan-8;
-  color: $cyan-8;
-  font-weight: 00;
-}
+
 .comment_area {
   width: 100vw;
 }
-.yes_or_no {
-  border: 1px solid $grey-5;
-  border-radius: 3rem;
-  transition: all 0.25s ease-in;
-}
-.choosen {
-  // border: 2px $cyan-8;
-  border: none;
-  font-weight: 800;
-  font-size: 1.01rem;
-  color: $cyan-8;
-}
+
 </style>

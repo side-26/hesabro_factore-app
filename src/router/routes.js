@@ -14,6 +14,10 @@ const routes = [
       {
         path: 'question_naire',
         component: () => import('pages/QuestionNairePage.vue')
+      },
+      {
+        path: 'factor',
+        component: () => import('pages/FactorPage.vue')
       }
     ]
   },

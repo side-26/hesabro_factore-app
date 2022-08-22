@@ -1,9 +1,9 @@
 <template lang="">
   <div class="q-mt-xl q-px-sm">
-    <div>{{ titleNo + 1 }}- {{ questionInfo.question }}</div>
+    <div class="font_weight">{{ titleNo + 1 }}- {{ questionInfo.question }}</div>
     <section class="q-mt-lg  q-px-sm">
-      <div v-if="isMultiChoices" class="row justify-center items-center">
-        <div v-for="item in questionInfo.options" :key="item.id">
+      <div v-if="isMultiChoices" class="row justify-center items-center multi_answers_in_desktop">
+        <div v-for="item in questionInfo.options" :key="item.id" class="answers_container">
           <AppAnswer :type="questionInfo.type.text" @click="handleAddAnswers()"
             >{{ item.title }}
           </AppAnswer>
@@ -14,7 +14,7 @@
           <AppAnswer :type="questionInfo.type.text" />
         </div>
       </div>
-      <div class="row justify-evenly" v-if="isYesOrNO">
+      <div class="" v-if="isYesOrNO">
         <div
           v-for="item in questionInfo.options"
           :key="item.id"
@@ -78,4 +78,5 @@ export default {
   }
 }
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+</style>
