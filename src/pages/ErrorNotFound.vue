@@ -1,20 +1,18 @@
 <template>
-  <div
-    class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center"
-  >
+  <div class="fullscreen text-center q-pa-md flex flex-center error_page">
     <div>
-      <div style="font-size: 30vh">
-        ۴۰۴
+      <div class="error_page_number">
+        404
       </div>
 
-      <div class="text-h2" style="opacity:.4">
-        اوپس چیزی اینجا نیست
+      <div class="error_page_desc" style="opacity:.4">
+        ادرس وارد شده اشتباه است.
       </div>
 
       <q-btn
-        class="q-mt-xl"
-        color="white"
-        text-color="blue"
+        class="q-mt-xl btn_error"
+        color="cyan-8"
+        text-color="white"
         unelevated
         to="/"
         label="برو دیدن فاکتور ها"
@@ -31,3 +29,16 @@ export default defineComponent({
   name: 'ErrorNotFound'
 })
 </script>
+<style lang="scss">
+.error_page {
+  .error_page_number {
+    font-size: 10vw;
+  }
+  .error_page_desc {
+    font-size: 5vw;
+  }
+  .btn_error {
+    min-width: 10vw;
+  }
+}
+</style>
