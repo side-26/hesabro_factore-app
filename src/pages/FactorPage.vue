@@ -13,14 +13,25 @@ const metaData = {
   // optional; sets final title as "Index Page - My Website", useful for multiple level meta
   titleTemplate: title => `${title} - سای
   ت تست`
-},
-
+}
 export default {
-    components: {
-        BasicTable
-    },
+  components: {
+    BasicTable
+  },
   setup (props) {
     useMeta(metaData)
   }
 }
 </script>
+<template>
+  <div><BasicTable /></div>
+</template>
+<script>
+import BasicTable from 'components/Factors/BasicTable.vue'
+export default {
+  components: {
+    BasicTable
+  }
+}
+</script>
+<style lang=""></style>
