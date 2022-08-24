@@ -8,11 +8,14 @@
           <th class="text-right">زیر مجموعه</th>
           <th class="text-right">نوع فاکتور</th>
           <th class="text-right">ایجاد شده در</th>
-          <th class="text-right">عملیات</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="factor in factors.data.items" :key="factor.id">
+        <tr
+          @click="handleShowDialog(factor.id)"
+          v-for="factor in factors.data.items"
+          :key="factor.id"
+        >
           <td>
             {{ factor.customer.name }}
           </td>
@@ -28,17 +31,21 @@
           <td>
             {{ factor.created }}
           </td>
-          <td>
-            <a @click="handleShowDialog(factor.id)" flat class="function_td">
-              جزِییات فاکتور
-            </a>
-          </td>
         </tr>
       </tbody>
     </q-markup-table>
+    <div ev class="q-pa-sm table_pagination_container">
+      <q-pagination
+        class="table_pagination"
+        elevated
+        v-model="currnetPage"
+        :max="maxPage"
+        input
+      />
+    </div>
     <q-dialog v-model="layout" class="dialog">
       <q-layout container class="bg-white">
-        <q-header borderd class="bg-cyan-8">
+        <q-header elevated class="bg-cyan-8">
           <q-toolbar class="row justify-between q-pa-md factor_dialog_toobar">
             <div class="">
               <div>تاریخ ایجاد :</div>
@@ -166,24 +173,39 @@
   </div>
 </template>
 <script>
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { factors } from '../../config/data.config'
 import { constants } from '../../config/constant.variable.js'
 import { handleSprateNumber } from '../../utilities/seprateNu'
+import { useRouter } from 'vue-router'
 export default {
   setup (props) {
+    const router = useRouter()
     const layout = ref(false)
+    const currnetPage = ref(1)
+    const perPage = ref(5)
     const factorDetailes = reactive({ props: {} })
+    const maxPage = computed(() =>
+      Math.ceil(factors.data.items.length / perPage.value)
+    )
     const handleShowDialog = id => {
-      factorDetailes.props = factors.data.items.find(item => item.id === id)
-      layout.value = true
+      // factorDetailes.props = factors.data.items.find(item => item.id === id)
+      // layout.value = true
+      // console.log(maxPage.value)
+      router.push(`/factor_detailes/${id}`)
     }
+
     return {
+      router,
       factors,
       layout,
+      currnetPage,
+      perPage,
+      maxPage,
       factorDetailes,
       handleShowDialog,
       constants,
+
       handleSprateNumber
     }
   }
@@ -237,7 +259,9 @@ tbody > tr {
   .dialog_table_body > tr {
     &:hover {
       background: $cyan-8;
-      color: white;
+      td {
+        color: white !important;
+      }
     }
   }
 }
@@ -254,6 +278,11 @@ thead {
   position: sticky !important;
   top: 0 !important;
 }
+.table {
+  tr {
+    cursor: pointer;
+  }
+}
 .final_price_container {
   .final_price_label {
     font-size: 1.1rem;
@@ -264,5 +293,15 @@ thead {
 }
 .download_btn {
   color: white;
+}
+.table_pagination_container {
+  .table_pagination {
+    transform: rotate(180deg);
+    justify-content: center;
+    input {
+      direction: ltr;
+      transform: rotate(180deg);
+    }
+  }
 }
 </style>
