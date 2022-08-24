@@ -11,7 +11,7 @@
         <profileMenu />
       </q-toolbar>
     </q-header>
-    <q-page-container style="margin-top:5rem">
+    <q-page-container class="q-page-container">
       <router-view />
     </q-page-container>
     <app-footer />
@@ -25,7 +25,7 @@ export default {
   components: { profileMenu, AppFooter }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .header_link {
   cursor: pointer;
   .header_title {
@@ -40,5 +40,15 @@ export default {
     color: $cyan-10;
     font-weight: 700;
   }
+}
+
+@media screen and (max-width: 599.9px) {
+}
+@media screen and (min-width: 1023.9px) {
+  .q-page-container {
+    padding-top: 100px !important;
+  }
+}
+@media screen and (max-width: 1439.9px) {
 }
 </style>
