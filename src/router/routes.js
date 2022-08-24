@@ -20,6 +20,10 @@ const routes = [
       {
         path: 'factor',
         component: () => import('pages/FactorPage.vue')
+      },
+      {
+        path: 'factor_detailes/:id',
+        component: () => import('pages/FactorDetailes.vue')
       }
     ]
   },
