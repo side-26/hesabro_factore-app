@@ -162,45 +162,127 @@
             </div>
           </div>
         </section>
-        <section class="row justify-between q-my-xl">
+        <section class="row justify-around q-my-xl">
           <div>
-            <div class="text-grey-7">مبلع نهایی</div>
+            <div class="text-grey-7 q-mb-md">مبلع نهایی</div>
             <div class="text-h3">
               {{ handleSprateNumber(factorDetailes.factor_amount) }}
               {{ constants.currency }}
             </div>
-            <div v-if="factorDetailes.remind === 0"></div>
+            <!-- v-if="factorDetailes.remind === 0" -->
+            <div
+              class="q-my-sm text-green-5"
+              v-if="+factorDetailes.remind === 0"
+            >
+              <q-icon name="check_circle" size="25px" /> مبلغ کامل پرداخت شده
+              است
+            </div>
+            <div v-else class="q-my-sm text-red-5">
+              مبلغ باقی مانده : {{ handleSprateNumber(factorDetailes.remind) }}
+              {{ constants.currency }}
+            </div>
           </div>
+          <div class="text-white">fasdfasfasfsafsadfasffsadfsa</div>
         </section>
       </div>
-      <section></section>
-      <section class="btn_group"></section>
+      <section class="table_section">
+        <div class="">
+          <FactorTable :tableHeaders="tableHeadersArr">
+            <tr v-for="factorItem in factorDetailes.items" :key="factorItem.id">
+              <td>
+                {{ factorItem.product.name }}
+              </td>
+              <td class="text-left">{{ factorItem.count }}</td>
+              <td>{{ factorItem.unit_price }} {{ constants.currency }}</td>
+              <td>
+                {{ handleSprateNumber(factorItem.sum_price) }}
+                {{ constants.currency }}
+              </td>
+              <td>
+                {{ handleSprateNumber(factorItem.discount) }}
+                {{ constants.currency }}
+              </td>
+              <td>
+                <div v-if="factorItem.tax">
+                  {{ handleSprateNumber(factorItem.tax) }}
+                  {{ constants.currency }}
+                </div>
+                <div v-else>0 {{ constants.currency }}</div>
+              </td>
+            </tr>
+          </FactorTable>
+        </div>
+      </section>
+      <section class="btn_group row justify-between q-mt-xl q-pb-sm">
+        <div class="btn_group_container row">
+          <q-btn
+            :loading="loading"
+            color="cyan-8"
+            @click="handleDownloadFile(3)"
+            style="width: 150px;"
+            class="q-mr-lg"
+          >
+            دانلود فایل سند
+            <template v-slot:loading>
+              <q-spinner-hourglass class="on-left" />
+              در حال دانلود....
+            </template>
+          </q-btn>
+          <q-btn flat>نظر سنجی</q-btn>
+        </div>
+        <div>
+          <q-btn icon-right="arrow_back" flat to="/factor" label="بازگشت" />
+        </div>
+      </section>
     </q-page>
   </div>
 </template>
 <script>
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { factors } from '../config/data.config'
 import { constants } from '../config/constant.variable.js'
 import { handleSprateNumber } from '../utilities/seprateNu'
+import FactorTable from 'components/Factors/FactorTable.vue'
 export default {
+  components: {
+    FactorTable
+  },
   setup (props) {
     const router = useRoute()
+    const loading = ref(false)
+    const tableHeadersArr = [
+      'نام محصول',
+      'تعداد',
+      'قیمت تکی',
+      'قیمت کل',
+      'تخفیف',
+      'مالیات'
+    ]
     const factorDetailes = computed(() =>
       factors.data.items.find(item => item.id === +router.params.id)
     )
+    const handleDownloadFile = () => {
+      loading.value = true
+      setTimeout(() => {
+        loading.value = false
+      }, 3000)
+    }
     onMounted(() => console.log(factorDetailes.value))
     return {
       factors,
+      loading,
+      tableHeadersArr,
       constants,
       handleSprateNumber,
-      factorDetailes
+      factorDetailes,
+      handleDownloadFile
     }
   }
 }
 </script>
 <style lang="scss">
+// in mobile
 .page_container {
   padding-top: 0 !important ;
   .total_price_container {
@@ -208,6 +290,12 @@ export default {
   }
 }
 // in deskop
+.btn_group {
+  padding: 0 21% 2rem 21%;
+  .btn_group_container {
+    width: 40%;
+  }
+}
 .first_section {
   padding: 3rem 6rem;
   .simple_info_section {
@@ -244,5 +332,8 @@ export default {
       }
     }
   }
+}
+.table_section {
+  margin: 0 21%;
 }
 </style>
