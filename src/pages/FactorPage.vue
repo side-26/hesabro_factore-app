@@ -1,53 +1,71 @@
 <template lang="">
   <div class="table_container q-mx-auto">
-    <BasicTable />
+    <FactorTable
+      class="q-pt-xl"
+      :tableHeaders="tableHeadersArr"
+      maxPage="5"
+      needTitle="true"
+    >
+      <tr
+        v-for="factor in factors.data.items"
+        @click="handleShowDetailes(factor.id)"
+        :key="factor.id"
+      >
+        <td>
+          {{ factor.customer.name }}
+        </td>
+        <td>
+          {{ factor.sell_agent.name }}
+        </td>
+        <td>
+          {{ factor.branch.name }}
+        </td>
+        <td>
+          {{ factor.factor_type.name }}
+        </td>
+        <td>
+          {{ factor.created }}
+        </td>
+      </tr>
+    </FactorTable>
   </div>
 </template>
-
 <script>
 import { useMeta } from 'quasar'
-import BasicTable from 'components/Factors/BasicTable.vue'
+import { useRouter } from 'vue-router'
+import { factors } from '../config/data.config'
+import FactorTable from 'components/Factors/FactorTable.vue'
 const metaData = {
   // sets document title
   title: 'صفحه فاکتور ها',
   // optional; sets final title as "Index Page - My Website", useful for multiple level meta
-  titleTemplate: title => `${title} - سای
-  ت تست`
+  titleTemplate: title => `${title} - حسابرو`
 }
 export default {
   components: {
-    BasicTable
+    FactorTable
   },
   setup (props) {
+    const router = useRouter()
+    const tableHeadersArr = [
+      'نام مشتری',
+      'نماینده فروش',
+      'شعبه',
+      'نوع فاکتور',
+      'ایجاد شده در'
+    ]
+    const handleShowDetailes = id => {
+      router.push(`/factor_detailes/${id}`)
+    }
     useMeta(metaData)
+    return {
+      factors,
+      tableHeadersArr,
+      handleShowDetailes
+    }
   }
 }
 </script>
 <style lang="scss">
-@media screen and (max-width: 599.99px) {
-}
-@media screen and (min-width: 600px) {
-  .table_container {
-    width: 95%;
-  }
-}
-@media screen and (max-width: 1023.99px) {
-}
-@media screen and (min-width: 1024px) {
-  .table_container {
-    width: 85%;
-  }
-}
-@media screen and (max-width: 1440px) {
-}
-@media screen and (min-width: 1440px) {
-  .table_container {
-    width: 80%;
-  }
-}
-@media screen and (min-width: 30000px) {
-  .table_container {
-    width: 60%;
-  }
-}
+@import url('assets/scss/pages/factor.scss');
 </style>
