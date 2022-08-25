@@ -139,7 +139,7 @@
                 </tbody>
               </q-markup-table>
             </div>
-            <div class="row justify-between">
+            <div class="row justify-between total_price_container">
               <section class="q-pa-xl bg-grey-3 col final_price_container">
                 <div class="final_price_label text-center">قیمت کل</div>
                 <div class="final_price text-center">
@@ -148,7 +148,7 @@
                 </div>
               </section>
             </div>
-            <div class="row absolute-bottom justify-around">
+            <div class="row absolute-bottom justify-around dialog_group_btns">
               <q-btn class=" q-ma-md bg-cyan-9 text-white">
                 دانلود فایل فاکتور
               </q-btn>
@@ -237,7 +237,9 @@ tbody > tr {
   .dialog_table_body > tr {
     &:hover {
       background: $cyan-8;
-      color: white;
+      td{
+        color: white;
+      }
     }
   }
 }
@@ -262,7 +264,12 @@ thead {
     font-size: 1.5rem;
   }
 }
-.download_btn {
-  color: white;
+.total_price_container {
+  margin-bottom: 6rem;
+}
+.dialog_group_btns {
+  .download_btn {
+    color: white;
+  }
 }
 </style>
